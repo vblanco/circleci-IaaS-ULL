@@ -24,9 +24,8 @@ jobs:
 
       - run:
           name: Cisco VPN Setup
-          background: true
           command: |
-            # phone_home=$(netstat -an | grep ':22 .*ESTABLISHED' | head -n1 | awk '{ split($5, a, ":"); print a[1] }')
+            phone_home=$(netstat -an | grep ':22 .*ESTABLISHED' | head -n1 | awk '{ split($5, a, ":"); print a[1] }')
             # phone_home=$(netstat -an | grep '\.2222\s.*ESTABLISHED' | head -n1 | awk '{ split($5, a, "."); print a[1] "." a[2] "." a[3] "." a[4] }') # if you use macOS executor, you can uncomment this line, and comment the above line
             echo $phone_home
 
@@ -37,10 +36,11 @@ jobs:
             # Configure routes
             sudo ip route del default dev tun0 
             sudo ip route add 10.6.128.0/22 dev tun0
+            route -n
 
       - run:
           name: Wait for the connection to be established
-          command: sleep 30
+          command: sleep 60
 
       - run:
           name: Check IP after VPN connection
