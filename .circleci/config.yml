@@ -31,12 +31,13 @@ jobs:
 
             echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
             sudo cp /tmp/ull.conf /etc/vpnc
-            sudo vpnc-connect --debug 3 ull
+            sudo vpnc-connect --debug 2 ull
 
             # Configure routes
             #sudo ip route del default dev tun0 
             #sudo ip route add 10.6.128.0/22 dev tun0
             route -n
+          no_output_timeout: 5m
 
       - run:
           name: Wait for the connection to be established
