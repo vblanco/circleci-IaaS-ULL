@@ -9,3 +9,18 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
+
+      - run:
+          name: Install VPNC (Cisco VPN)
+          command: |
+            sudo apt-get update
+            sudo apt-get install vpnc -y
+
+      - run:
+          name: Check IP before VPN connection
+          command: |
+            ifconfig
+            route -n
+            sudo netstat -anp
+            cat /etc/resolv.conf
+            curl www.ull.es
