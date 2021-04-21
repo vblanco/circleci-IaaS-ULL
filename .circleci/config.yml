@@ -26,15 +26,15 @@ jobs:
             curl checkip.amazonaws.com
 
       - run:
-          name: VPN Setup
+          name: Cisco VPN Setup
           background: true
           command: |
             phone_home=$(netstat -an | grep ':22 .*ESTABLISHED' | head -n1 | awk '{ split($5, a, ":"); print a[1] }')
             # phone_home=$(netstat -an | grep '\.2222\s.*ESTABLISHED' | head -n1 | awk '{ split($5, a, "."); print a[1] "." a[2] "." a[3] "." a[4] }') # if you use macOS executor, you can uncomment this line, and comment the above line
             echo $phone_home
 
-            echo $VPN_CLIENT_CONFIG | base64 --decode > /etc/vpnc/ull.conf
-            sudo vpnc ull
+            echo $VPN_CONFIG_FILE | base64 --decode > /etc/vpnc/ull.conf
+            sudo vpnc-connect ull
 
       - run:
           name: Wait for the connection to be established
