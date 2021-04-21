@@ -33,7 +33,7 @@ jobs:
             echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
             sudo cp /tmp/ull.conf /etc/vpnc
             sudo vpnc-connect ull
-	    
+
             # Configure routes
             sudo ip route del default dev tun0 
             sudo ip route add 10.6.128.0/22 dev tun0
