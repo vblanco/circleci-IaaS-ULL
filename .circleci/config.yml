@@ -31,7 +31,7 @@ jobs:
 
             echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
             sudo cp /tmp/ull.conf /etc/vpnc
-            sudo vpnc-connect ull
+            sudo vpnc-connect --natt-mode force-natt ull
 
             # Configure routes
             sudo ip route del default dev tun0 
