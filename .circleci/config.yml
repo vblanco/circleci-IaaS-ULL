@@ -16,9 +16,9 @@ jobs:
       - run:
           name: Check IP before VPN connection
           command: |
-            ifconfig
-            route -n
-            sudo netstat -anp
+            ip a
+            ip r
+            ss -atn
             cat /etc/resolv.conf
             curl checkip.amazonaws.com
 
@@ -36,7 +36,7 @@ jobs:
             # Configure routes
             #sudo ip route del default dev tun0 
             #sudo ip route add 10.6.128.0/22 dev tun0
-            route -n
+            ip r
           no_output_timeout: 5m
 
       - run:
@@ -46,9 +46,9 @@ jobs:
       - run:
           name: Check IP after VPN connection
           command: |
-            ifconfig
-            route -n
-            sudo netstat -anp
+            ip a
+            ip r
+            ss -atn
             cat /etc/resolv.conf
             curl checkip.amazonaws.com
       
