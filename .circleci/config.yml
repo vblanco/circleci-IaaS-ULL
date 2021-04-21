@@ -1,9 +1,8 @@
 version: 2.1
 jobs:
   build:
-    docker:
-      - machine: true
-          image: ubuntu-1604:202007-01
+    machine: true
+      image: ubuntu-1604:202007-01
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
