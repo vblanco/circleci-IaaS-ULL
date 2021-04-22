@@ -10,8 +10,8 @@ jobs:
       - run:
           name: Install VPNC (Cisco VPN)
           command: |
-            sudo apt-get update
-            sudo apt-get install vpnc -y
+            sudo apt update
+            sudo apt install network-mananger-vpnc
 
       - run:
           name: Check IP before VPN connection
@@ -25,23 +25,20 @@ jobs:
       - run:
           name: Cisco VPN Setup
           command: |
-            #phone_home=$(netstat -an | grep ':22 .*ESTABLISHED' | head -n1 | awk '{ split($5, a, ":"); print a[1] }')
-            # phone_home=$(netstat -an | grep '\.2222\s.*ESTABLISHED' | head -n1 | awk '{ split($5, a, "."); print a[1] "." a[2] "." a[3] "." a[4] }') # if you use macOS executor, you can uncomment this line, and comment the above line
-            #echo $phone_home
 
-            echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
-            sudo cp /tmp/ull.conf /etc/vpnc
-            sudo vpnc-connect --debug 2 ull
+            #echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
+            #sudo cp /tmp/ull.conf /etc/vpnc
+            #sudo vpnc-connect --debug 2 ull
+            nmcli con show
 
             # Configure routes
             #sudo ip route del default dev tun0 
             #sudo ip route add 10.6.128.0/22 dev tun0
             ip r
-          no_output_timeout: 5m
 
       - run:
           name: Wait for the connection to be established
-          command: sleep 60
+          command: sleep 30
 
       - run:
           name: Check IP after VPN connection
@@ -60,5 +57,5 @@ jobs:
 
       - run:
           name: Disconnect from  CISCO ULL
-          command: sudo vpnc-disconnect || true
+          command: sudo echo "1" || true
           when: always
