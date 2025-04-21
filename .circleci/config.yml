@@ -14,6 +14,6 @@ jobs:
       - run:
           name: Run commands in our infrastructure
           command: |
-            # A command
+            echo "Done" 
             # Another command
 
