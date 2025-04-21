@@ -29,6 +29,8 @@ jobs:
       - run:
           name: Run commands in our infrastructure
           command: |
+            echo "Public IP is now ..." 
+            curl -s http://checkip.amazonaws.com
             echo "Done" 
             # Another command
       - run:
