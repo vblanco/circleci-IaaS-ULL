@@ -6,10 +6,26 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
-      - run: #Install stuff
+      - run: 
           name: Update and install
           command: |
-            sudo apt update && sudo apt install -y openconnect curl gnupg libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb ca-certificates
+            sudo apt update && sudo apt install -y openconnect curl ca-certificates
+      - run:
+          name: VPN Connection
+          command: |
+            echo "Conectando a VPN..."
+            echo $VPN_PASSWORD | openconnect --protocol=gp --user=vblanco --passwd-on-stdin vpn.ull.es &
+            timeout=0
+            while ! ip a show tun0 &>/dev/null && [ $timeout -lt 60 ]; do
+               echo "Esperando conexión VPN..."
+               sleep 1
+               timeout=$((timeout+1))
+            done
+            if [ $timeout -ge 60 ]; then
+              echo "No se pudo conectar a la VPN en 60 segundos."
+              exit 1
+            fi
+            echo "VPN conectada"
 
       - run:
           name: Run commands in our infrastructure
