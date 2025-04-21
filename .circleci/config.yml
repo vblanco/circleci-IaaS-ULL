@@ -9,7 +9,7 @@ jobs:
       - run: #Install stuff
           name: Update and install
           command: |
-            sudo apt update && apt install -y openconnect curl gnupg libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb ca-certificates
+            sudo apt update && sudo apt install -y openconnect curl gnupg libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb ca-certificates
 
       - run:
           name: Run commands in our infrastructure
