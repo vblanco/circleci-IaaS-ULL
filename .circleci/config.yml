@@ -14,7 +14,7 @@ jobs:
           name: VPN Connection
           command: |
             echo "Conectando a VPN..."
-            echo $VPN_PASSWORD | openconnect --protocol=gp --user=sriosr --passwd-on-stdin vpn.ull.es &
+            echo $VPN_PASSWORD | sudo openconnect --protocol=gp --user=sriosr --passwd-on-stdin vpn.ull.es &
             timeout=0
             while ! ip a show tun0 &>/dev/null && [ $timeout -lt 60 ]; do
                echo "Esperando conexión VPN..."
