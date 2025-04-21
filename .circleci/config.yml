@@ -2,63 +2,14 @@ version: 2.1
 jobs:
   build:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
 
-      - run:
-          name: Install VPNC (Cisco VPN)
-          command: |
-            sudo apt-get update
-            sudo apt-get install vpnc -y
-
-      - run:
-          name: Check IP before VPN connection
-          command: |
-            ip a
-            ip r
-            ss -atn
-            cat /etc/resolv.conf
-            curl checkip.amazonaws.com
-
-      - run:
-          name: Cisco VPN Setup
-          command: |
-            #phone_home=$(netstat -an | grep ':22 .*ESTABLISHED' | head -n1 | awk '{ split($5, a, ":"); print a[1] }')
-            # phone_home=$(netstat -an | grep '\.2222\s.*ESTABLISHED' | head -n1 | awk '{ split($5, a, "."); print a[1] "." a[2] "." a[3] "." a[4] }') # if you use macOS executor, you can uncomment this line, and comment the above line
-            #echo $phone_home
-
-            echo $VPN_CONFIG_FILE | base64 --decode > /tmp/ull.conf
-            sudo cp /tmp/ull.conf /etc/vpnc
-            sudo vpnc-connect --debug 2 ull
-
-            # Configure routes
-            #sudo ip route del default dev tun0 
-            #sudo ip route add 10.6.128.0/22 dev tun0
-            ip r
-          no_output_timeout: 5m
-
-      - run:
-          name: Wait for the connection to be established
-          command: sleep 60
-
-      - run:
-          name: Check IP after VPN connection
-          command: |
-            ip a
-            ip r
-            ss -atn
-            cat /etc/resolv.conf
-            curl checkip.amazonaws.com
-      
       - run:
           name: Run commands in our infrastructure
           command: |
             # A command
             # Another command
 
-      - run:
-          name: Disconnect from  CISCO ULL
-          command: sudo vpnc-disconnect || true
-          when: always
